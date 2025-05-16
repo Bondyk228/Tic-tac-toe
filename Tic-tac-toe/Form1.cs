@@ -12,7 +12,9 @@ namespace Tic_tac_toe
 {
     public partial class TicTacToeWindow: Form
     {
+        // Масив для зберігання значень кнопок
         private string[] board = new string[9];
+        // Змінна для визначення черги гравців
         private bool isPlayerXTurn = true;
         public TicTacToeWindow()
         {
@@ -23,18 +25,19 @@ namespace Tic_tac_toe
         {
             Button clickedButton = sender as Button;
 
-            // Находим индекс кнопки в массиве
+            // За індексацією від нуля визначаємо кнопку button(цифра)
             int index = int.Parse(clickedButton.Name.Substring(6)) - 1;
 
-            // Если кнопка уже нажата, ничего не делаем
+            // Якщо кнопка вже має значення Х або О, нічого не відбудеться.
             if (board[index] != null)
                 return;
 
-            // Обновляем состояние кнопки
+            // Перевіряємо, чи це хід гравця X true, якщо false то О
             board[index] = isPlayerXTurn ? "X" : "O";
+            // Встановлюємо значення Х або О на кнопку 
             clickedButton.Text = board[index];
 
-            // Проверяем на победу
+            // Перевірка на перемогу або нічию
             if (CheckForWin())
             {
                 MessageBox.Show($"{(isPlayerXTurn ? "X" : "O")} Виграв!");
@@ -47,35 +50,35 @@ namespace Tic_tac_toe
                 ResetBoard();
                 return;
             }
-            // Меняем ход
+            // Зміна черги гравців
             isPlayerXTurn = !isPlayerXTurn;
         }
 
-        // Функция для проверки победы
+        // Функція для перевірки на перемогу
         private bool CheckForWin()
         {
-            // Все возможные комбинации победных линий
+            // Усі можливі виграшні комбінації
             int[,] winningCombinations = new int[,]
             {
-                {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Горизонтальные линии
-                {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Вертикальные линии
-                {0, 4, 8}, {2, 4, 6}             // Диагонали
+                {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Горизонтальні лінії
+                {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Вертикальні лінії
+                {0, 4, 8}, {2, 4, 6}             // Діагоналі
             };
 
-            // Проверка всех комбинаций
+            // Перевірка кожної комбінації
             for (int i = 0; i < 8; i++)
             {
                 if (board[winningCombinations[i, 0]] != null &&
                     board[winningCombinations[i, 0]] == board[winningCombinations[i, 1]] &&
                     board[winningCombinations[i, 0]] == board[winningCombinations[i, 2]])
                 {
-                    return true; // Победа
+                    return true; // Перемога
                 }
             }
-            return false; // Нет победы
+            return false; // Якщо нема перемоги
         }
 
-        // Функция для сброса состояния доски
+        // Функція для скидання дошки
         private void ResetBoard()
         {
             for (int i = 0; i < 9; i++)
@@ -87,7 +90,7 @@ namespace Tic_tac_toe
                     button.Text = "";
                 }
             }
-            isPlayerXTurn = true; // Начинает X
+            isPlayerXTurn = true; // Починає гравець X
         }
     }
 }
